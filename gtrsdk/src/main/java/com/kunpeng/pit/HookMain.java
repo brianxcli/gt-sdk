@@ -22,7 +22,7 @@ public class HookMain {
 
     static {
         System.loadLibrary("yhook");
-        init(android.os.Build.VERSION.SDK_INT);
+        init(Build.VERSION.SDK_INT);
     }
 
     public static void doHookDefault(Class hookClazz) {

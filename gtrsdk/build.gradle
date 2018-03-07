@@ -13,7 +13,7 @@ android {
 
         externalNativeBuild {
             ndkBuild {
-                abiFilters "armeabi-v7a", "x86"
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86"
             }
         }
     }
@@ -29,58 +29,59 @@ android {
             path 'src/main/jni/Android.mk'
         }
     }
-
 }
 
 dependencies {
-    compile project(':yhook')
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+    compile "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
 }
 
-def deleteDir(String filePath) {
-    if (file(filePath).exists()) {
-        println "delete Dir:${filePath}"
-        file(filePath).deleteDir()
-    }
-}
+apply from: 'publish.gradle'
 
-
-def makeSDK() {
-
-    String yhookSrc = "${rootProject.getRootDir()}/yhook/build/intermediates/classes/debug/com/"
-    String sdkSrc = "${project.getBuildDir()}/intermediates/classes/debug/com/"
-    String classPath = "${project.getProjectDir()}/achievements/classes/"
-    String destPath = "${project.getProjectDir()}/achievements/"
-    String archiveName = "gt_sdk_3.1.0.jar"
-    deleteDir("${destPath}")
-
-    copy {
-        from("${yhookSrc}")
-        into("${classPath}/com/")
-    }
-    copy {
-        from("${sdkSrc}")
-        into("${classPath}/com/")
-    }
-
-    Jar myJar = task(myJar, type: Jar)
-    //指定jar的名字
-    myJar.archiveName = "${archiveName}"
-    //指定class生成的包路径
-    myJar.destinationDir = new File("${destPath}")
-    //指定我们需要构建的class的路径
-    myJar.from("${classPath}")
-    //排除我们需要打包的资源
-    myJar.exclude('**/BuildConfig.class', '**/R.class')
-    myJar.exclude { it.name.startsWith('R$') }
-    myJar.execute()
-
-}
-
-android.libraryVariants.all { variant ->
-
-    String suffix = variant.variantData.name.capitalize()
-    tasks.getByName("assemble${suffix}").doLast {
-        makeSDK()
-    }
-}
+//def deleteDir(String filePath) {
+//    if (file(filePath).exists()) {
+//        println "delete Dir:${filePath}"
+//        file(filePath).deleteDir()
+//    }
+//}
+//
+//def makeSDK() {
+//    String yhookSrc = "${rootProject.getRootDir()}/yhook/build/intermediates/classes/debug/com/"
+//    String sdkSrc = "${project.getBuildDir()}/intermediates/classes/debug/com/"
+//    String classPath = "${project.getProjectDir()}/achievements/classes/"
+//    String destPath = "${project.getProjectDir()}/achievements/"
+//    String archiveName = "gt_sdk_3.1.0.jar"
+//    deleteDir("${destPath}")
+//
+//    copy {
+//        from("${yhookSrc}")
+//        into("${classPath}/com/")
+//    }
+//    copy {
+//        from("${sdkSrc}")
+//        into("${classPath}/com/")
+//    }
+//
+//    Jar myJar = task(myJar, type: Jar)
+//    //指定jar的名字
+//    myJar.archiveName = "${archiveName}"
+//    //指定class生成的包路径
+//    myJar.destinationDir = new File("${destPath}")
+//    //指定我们需要构建的class的路径
+//    myJar.from("${classPath}")
+//    //排除我们需要打包的资源
+//    myJar.exclude('**/BuildConfig.class', '**/R.class')
+//    myJar.exclude { it.name.startsWith('R$') }
+//    myJar.execute()
+//}
+//
+//android.libraryVariants.all { variant ->
+//    String suffix = variant.variantData.name.capitalize()
+//    tasks.getByName("assemble${suffix}").doLast {
+//        makeSDK()
+//    }
+//}

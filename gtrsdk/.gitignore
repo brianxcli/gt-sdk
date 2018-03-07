@@ -2,3 +2,4 @@
 achievements
 libs
 .externalNativeBuild
+publish.gradle

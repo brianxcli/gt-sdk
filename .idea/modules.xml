@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/gt-sdk.iml" filepath="$PROJECT_DIR$/gt-sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/gtrsdk/gtrsdk.iml" filepath="$PROJECT_DIR$/gtrsdk/gtrsdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/yhook/yhook.iml" filepath="$PROJECT_DIR$/yhook/yhook.iml" />
     </modules>
   </component>
 </project>
